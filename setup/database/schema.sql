@@ -1,19 +1,17 @@
--- Run this command in PostgreSQL to export schema:
--- pg_dump -h localhost -U your_username -d your_database --schema-only > schema.sql
-
-SELECT current_database();
-SELECT current_schema();
-
+DROP TABLE IF EXISTS news_articles;
 
 CREATE TABLE news_articles (
     id SERIAL PRIMARY KEY,
     title VARCHAR(500) NOT NULL,
     description TEXT,
-    author VARCHAR(200),
     url TEXT NOT NULL,
+    author VARCHAR(200),
     published_at VARCHAR(50),
+    content TEXT,                            -- ✅ Added this
     source VARCHAR(100) NOT NULL,
     category VARCHAR(50) NOT NULL,
+    country VARCHAR(50),                     -- ✅ Added this
+    language VARCHAR(50),                    -- ✅ Added this
     timestamp BIGINT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
