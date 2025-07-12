@@ -7,7 +7,7 @@ Real-time news data pipeline using Kafka, Scala, and PostgreSQL.
 - Fetches news from NewsAPI every 2 minutes
 - Processes 4 categories: business, technology, health, science
 - Stores articles in PostgreSQL with duplicate detection
-- Real-time Kafka streaming with multiple partitions
+- Real-time Kafka streaming 
 - Configurable rate limiting and error handling
 
 ## 📋 Prerequisites
