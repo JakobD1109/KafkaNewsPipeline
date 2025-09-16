@@ -32,7 +32,7 @@ object NewsConsumerDB2 {
     driver = "org.postgresql.Driver"
   )
 
-  // ✅ Slick table mapping must also be defined **inside** the object
+  // ✅ Slick table mapping 
   class NewsTable(tag: Tag) extends Table[NewsArticle](tag, "news_articles") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def title = column[String]("title")
@@ -59,7 +59,7 @@ object NewsConsumerDB2 {
   def insertArticle(article: NewsArticle): Unit = {
     val insertAction = newsArticles += article
     Await.result(db.run(insertAction), 5.seconds)
-    println(s"✅ Inserted: ${article.title}")
+    println(s" Inserted: ${article.title}")
   }
 
   def startConsumer(): Unit = {
@@ -73,24 +73,24 @@ object NewsConsumerDB2 {
     val consumer = new KafkaConsumer[String, String](props)
     consumer.subscribe(List(kafkaTopic).asJava)
 
-    println(s"🚀 NewsConsumerDB1 subscribed to topic '$kafkaTopic'")
+    println(s" NewsConsumerDB1 subscribed to topic '$kafkaTopic'")
 
     while (true) {
       val records = consumer.poll(java.time.Duration.ofMillis(1000)).asScala
 
       if (records.nonEmpty) {
-        println(s"📥 Received ${records.size} record(s)")
+        println(s" Received ${records.size} record(s)")
       }
 
       records.foreach { record =>
         try {
-          println(s"🧪 Raw JSON: ${record.value()}")
+          println(s" Raw JSON: ${record.value()}")
           val article = mapper.readValue(record.value(), classOf[NewsArticle])
-          println(s"🧪 Parsed article: $article")
+          println(s" Parsed article: $article")
           insertArticle(article)
         } catch {
           case e: Exception =>
-            println(s"❌ Failed to process record: ${e.getMessage}")
+            println(s" Failed to process record: ${e.getMessage}")
             e.printStackTrace()
         }
       }
