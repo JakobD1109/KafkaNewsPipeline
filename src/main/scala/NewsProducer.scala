@@ -70,25 +70,25 @@ object NewsProducer {
     } match {
       case Success(articles) => articles
       case Failure(e) =>
-        println(s"❌ Failed to fetch news for $category: ${e.getMessage}")
+        println(s" Failed to fetch news for $category: ${e.getMessage}")
         Seq.empty
     }
   }
 
   def main(args: Array[String]): Unit = {
-    println("🧩 Config keys loaded: " + config.entrySet().asScala.map(_.getKey).mkString(", "))
-    println(s"🚀 Starting NewsProducer for topic '$topic'")
+    println(" Config keys loaded: " + config.entrySet().asScala.map(_.getKey).mkString(", "))
+    println(s" Starting NewsProducer for topic '$topic'")
 
     while (true) {
       categories.foreach { category =>
-        println(s"🔍 Fetching category: $category")
+        println(s" Fetching category: $category")
         val articles = fetchNews(category)
 
         articles.foreach { article =>
           val json = mapper.writeValueAsString(article)
           val record = new ProducerRecord[String, String](topic, article.title, json)
           producer.send(record)
-          println(s"📤 Sent: ${article.title}")
+          println(s" Sent: ${article.title}")
           Thread.sleep(delayMs)
         }
 
